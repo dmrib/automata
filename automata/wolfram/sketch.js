@@ -1,5 +1,5 @@
-GRID_WIDTH = 350;
-GRID_HEIGHT = 350;
+GRID_WIDTH = 800;
+GRID_HEIGHT = 300;
 
 class WolframAutomata {
 	constructor() {
@@ -8,7 +8,7 @@ class WolframAutomata {
 		this.numCells = GRID_WIDTH / this.resolution;
 		this.generations = [];
 		this.current = [];
-		this.ruleset = [1, 0, 1, 0, 1, 0, 0, 1];  // 0 to 255
+		this.ruleset = this.toBin(110);  // 0 to 255
 		this.start();
 	}
 
@@ -37,7 +37,7 @@ class WolframAutomata {
 
 		for(let i=0; i<this.current.length; i++) {
 			let prev = i-1 >= 0 ? i : this.current.length - 1;
-			let next = i+1 <= this.current.length
+			let next = i+1 < this.current.length ? i : 0;
 
 			let pattern = [this.current[prev], this.current[i], this.current[i+1]];
 			let index = this.toInt(pattern);
@@ -51,7 +51,7 @@ class WolframAutomata {
 	randomGeneration() {
 		let generation = [];
 		for (let i=0; i<this.numCells; i++) {
-			i === int(this.numCells/2) ? generation.push(1) : generation.push(0);
+			generation.push(Math.random() > 0.5 ? 1 : 0);
 		}
 		return generation;
 	}
