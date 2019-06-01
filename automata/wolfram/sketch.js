@@ -1,5 +1,5 @@
-GRID_WIDTH = 800;
-GRID_HEIGHT = 800;
+GRID_WIDTH = 350;
+GRID_HEIGHT = 350;
 
 class WolframAutomata {
 	constructor() {
@@ -8,7 +8,7 @@ class WolframAutomata {
 		this.numCells = GRID_WIDTH / this.resolution;
 		this.generations = [];
 		this.current = [];
-		this.ruleset = [0, 0, 1, 0, 1, 0, 1, 0];  // 0 to 255
+		this.ruleset = [1, 0, 1, 0, 1, 0, 0, 1];  // 0 to 255
 		this.start();
 	}
 
@@ -18,7 +18,12 @@ class WolframAutomata {
 	}
 
 	tick() {
-		let next = this.randomGeneration();
+		if (this.generation > GRID_HEIGHT / this.resolution) {
+			automata.ruleset = automata.toBin(int(random(0, 255)));
+			automata.start();
+			this.generation = 0;
+		}
+		let next = this.nextGeneration();
 		if (this.generations.length > GRID_HEIGHT / this.resolution) {
 			this.generations.shift();
 		}
@@ -27,10 +32,26 @@ class WolframAutomata {
 		this.generation += 1;
 	}
 
+	nextGeneration() {
+		let breed = [];
+
+		for(let i=0; i<this.current.length; i++) {
+			let prev = i-1 >= 0 ? i : this.current.length - 1;
+			let next = i+1 <= this.current.length
+
+			let pattern = [this.current[prev], this.current[i], this.current[i+1]];
+			let index = this.toInt(pattern);
+
+			breed.push(this.ruleset[index]);
+		}
+
+		return breed;
+	}
+
 	randomGeneration() {
 		let generation = [];
 		for (let i=0; i<this.numCells; i++) {
-			generation.push(Math.random() > 0.5 ? true : false);
+			i === int(this.numCells/2) ? generation.push(1) : generation.push(0);
 		}
 		return generation;
 	}
@@ -94,3 +115,7 @@ function draw() {
 	automata.draw();
 }
 
+function mouseClicked() {
+	automata.ruleset = automata.toBin(int(random(0, 255)));
+	automata.start();
+}
