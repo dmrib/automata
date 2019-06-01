@@ -2,22 +2,22 @@ GRID_WIDTH = 800;
 GRID_HEIGHT = 800;
 
 class WolframAutomata {
-	constructor () {
+	constructor() {
 		this.generation = 0;
 		this.resolution = 10;
 		this.numCells = GRID_WIDTH / this.resolution;
 		this.generations = [];
 		this.current = [];
+		this.ruleset = [0, 0, 1, 0, 1, 0, 1, 0];  // 0 to 255
 		this.start();
-		this.drawGeneration(0, this.current);
 	}
 
-	start () {
+	start() {
 		this.current = this.randomGeneration();
 		this.generations.push(this.current);
 	}
 
-	tick () {
+	tick() {
 		let next = this.randomGeneration();
 		if (this.generations.length > GRID_HEIGHT / this.resolution) {
 			this.generations.shift();
@@ -42,9 +42,42 @@ class WolframAutomata {
 		}
 	}
 
-	draw () {
+	draw() {
 		for (let i=0; i<this.generations.length; i++) {
 			this.drawGeneration(i, this.generations[i]);
+		}
+	}
+
+	toInt(bin) {
+		let value = 0;
+
+		for(let i=0; i<=bin.length; i++) {
+			if(bin[i]) {
+				value += Math.pow(2, bin.length - 1 - i);
+			}
+		}
+
+		return value;
+	}
+
+	toBin(value) {
+		let bin = [];
+		let remainder;
+
+		while(value > 0) {
+			remainder = value%2;
+			value = Math.floor(value/2);
+			bin.unshift(remainder);
+		}
+
+		if(bin.length > 0)  {
+			while(bin.length < 8) {
+				bin.unshift(0);
+			}
+			return bin;
+		}
+		else {
+			return [0];
 		}
 	}
 }
