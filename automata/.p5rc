@@ -1,6 +1,7 @@
 {
   "name": "automata",
   "projects": [
-    "wolfram"
+    "wolfram",
+    "gameoflife"
   ]
 }
