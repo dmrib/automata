@@ -24,13 +24,16 @@ class GameOfLife {
 		for (let i=0; i<this.rows; i++) {
 			for (let j=0; j<this.columns; j++) {
 				this.cells[i][j] ? fill(0) : fill(255);
-				rect(j*this.resolution, i*this.resolution, this.resolution, this.resolution);
+				rect(i*this.resolution, j*this.resolution, this.resolution, this.resolution);
 			}
 		}
 	}
 }
 
 let game;
+let debug = false;
+let selected;
+let cell;
 
 function setup() {
 	createCanvas(WINDOW_HEIGHT + 1, WINDOW_WIDTH + 1);
@@ -40,4 +43,17 @@ function setup() {
 function draw() {
 	background(255);
 	game.draw();
+
+	if (debug) {
+		cell = p5.Vector.mult(selected, 25);
+		fill(0, 255, 0);
+		rect(cell.x, cell.y, 25, 25);
+	}
+}
+
+function keyPressed() {
+	if (key === 'T') {
+		debug = !debug;
+		selected = createVector(int(mouseX/25), int(mouseY/25));
+	}
 }
