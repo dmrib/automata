@@ -41,6 +41,34 @@ class GameOfLife {
 		return around;
 	}
 
+	update() {
+		let next = [];
+		for(let i=0; i<this.rows; i++) {
+			let row = [];
+			for(let j=0; j<this.columns; j++) {
+				const around = this.neighboors(i, j);
+
+				// death
+				if(this.cells[i][j] && (around >= 4 || around <= 1)) {
+					row.push(false);
+				}
+
+				// birth
+				else if(!this.cells[i][j] && (around === 3)) {
+					row.push(true);
+				}
+
+				// stasis
+				else {
+					row.push(this.cells[i][j]);
+				}
+			}
+			next.push(row);
+		}
+		this.cells = next;
+	}
+}
+
 let game;
 
 function setup() {
@@ -51,4 +79,5 @@ function setup() {
 function draw() {
 	background(255);
 	game.draw();
+	game.update();
 }
