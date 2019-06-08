@@ -1,9 +1,9 @@
-WINDOW_WIDTH = 800;
-WINDOW_HEIGHT = 800;
+WINDOW_WIDTH = 500;
+WINDOW_HEIGHT = 500;
 
 class GameOfLife {
 	constructor() {
-		this.resolution = 25;
+		this.resolution = 10;
 		this.columns = WINDOW_WIDTH / this.resolution;
 		this.rows = WINDOW_HEIGHT / this.resolution;
 		this.cells = []
@@ -31,23 +31,17 @@ class GameOfLife {
 
 	neighboors(x, y) {
 		let around = 0;
-		for (let i=x-1; i<=x+1; i++) {
-			for (let j=y-1; j<=y+1; j++) {
-				if (!(i===x && j===y)) {
-					if(this.cells[i][j]) around++;
-					neighborhood.push(createVector(i, j));
+		for (let i=max(0, x-1); i<=min(this.rows-1, x+1); i++) {
+			for (let j=max(0, y-1); j<=min(this.columns, y+1); j++) {
+				if (!(i===x && j===y) && this.cells[i][j]) {
+					around++;
 				}
 			}
 		}
-		console.log(around);
+		return around;
 	}
-}
 
 let game;
-let debug = false;
-let selected;
-let cell;
-let neighborhood = [];
 
 function setup() {
 	createCanvas(WINDOW_HEIGHT + 1, WINDOW_WIDTH + 1);
@@ -57,23 +51,4 @@ function setup() {
 function draw() {
 	background(255);
 	game.draw();
-
-	if (debug) {
-		cell = p5.Vector.mult(selected, 25);
-		fill(0, 255, 0);
-		rect(cell.x, cell.y, 25, 25);
-		game.neighboors(selected.x, selected.y);
-		neighborhood.forEach(element => {
-			game.cells[element.x][element.y] ? fill(255, 0, 0) : fill(0, 0, 255);
-			rect(element.x*25, element.y*25, 25, 25);
-		});
-	}
-}
-
-function keyPressed() {
-	if (key === 'T') {
-		debug = !debug;
-		selected = createVector(int(mouseX/25), int(mouseY/25));
-		neightborhood = [];
-	}
 }
