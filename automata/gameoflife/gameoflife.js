@@ -1,0 +1,158 @@
+/**
+ * Game of life automata abstraction.
+ */
+
+class GameOfLife
+{
+    /**
+     * Constructor.
+     *
+     * Args:
+     *  resolution(number): grid tile resolution in pixels
+     *
+     * Returns:
+     *  undefined.
+     */
+    constructor(resolution)
+    {
+        // store components
+        this.resolution = resolution;
+        this.rows = windowHeight / this.resolution;
+		this.columns = windowWidth / this.resolution;
+        this.cells = []
+
+        // start game of life
+		this.start();
+	}
+
+    /**
+     * I setup my initial state.
+     *
+     * Returns:
+     *  undefined.
+     */
+    start()
+    {
+        // for each row in grid
+        for (let i=0; i<this.rows; i++)
+        {
+            // initialize new row container
+            let row = [];
+
+            // for each column in row
+            for (let j=0; j<this.columns; j++)
+            {
+                // randomize life presence
+				row.push(random() > 0.5 ? true : false);
+            }
+
+            // insert created row in grid
+			this.cells.push(row);
+		}
+	}
+
+    /**
+     * I draw my state representation.
+     *
+     * Returns:
+     *  undefined.
+     */
+    draw()
+    {
+        // for each row in grid
+        for (let i=0; i<this.rows; i++)
+        {
+            // for each column in row
+            for (let j=0; j<this.columns; j++)
+            {
+                // cell has life: set color to black
+                this.cells[i][j] ? fill(0) : fill(255);
+
+                // draw cell borders
+				rect(j*this.resolution, i*this.resolution, this.resolution, this.resolution);
+			}
+		}
+	}
+
+    /**
+     * I compute how many surrounding with life a given position has.
+     *
+     * Args:
+     *  x(number): cell x coordinate
+     *  y(number): cell y coordinate
+     *
+     * Returns:
+     *  around(number): number of surrounding cells with life
+     */
+    neighboors(x, y)
+    {
+        // start neighboors with life counter
+        let around = 0;
+
+        // for each 8-neighborhood of position
+        for (let i=max(0, x-1); i<=min(this.rows-1, x+1); i++)
+        {
+            for (let j=max(0, y-1); j<=min(this.columns, y+1); j++)
+            {
+                // neighboor position has life: increment counter
+                if (!(i===x && j===y) && this.cells[i][j])
+                {
+					around++;
+				}
+			}
+        }
+
+        // return amount of surrounding with life
+		return around;
+	}
+
+    /**
+     * I update my state.
+     *
+     * Returns:
+     *  undefined.
+     */
+    update()
+    {
+        // create next state container
+        let next = [];
+
+        // for each row in grid
+        for(let i=0; i<this.rows; i++)
+        {
+            // start updated row container
+            let row = [];
+
+            // for each column in row
+            for(let j=0; j<this.columns; j++)
+            {
+                // get amount of surrounding cells with life
+				const around = this.neighboors(i, j);
+
+				// cell is dead and has exactly three neighboors: create life
+                if(!this.cells[i][j] && (around === 3))
+                {
+					row.push(true);
+				}
+
+				// cell is alive and has two or three neighboors: cell survives
+                else if(this.cells[i][j] && (around >= 2 && around <= 3))
+                {
+					row.push(this.cells[i][j]);
+				}
+
+				// otherwise: cell dies
+                else
+                {
+					row.push(false);
+				}
+            }
+
+            // add row to next state
+			next.push(row);
+        }
+
+        // update state
+		this.cells = next;
+	}
+}
