@@ -1,7 +1,0 @@
-{
-  "name": "automata",
-  "projects": [
-    "wolfram",
-    "gameoflife"
-  ]
-}
