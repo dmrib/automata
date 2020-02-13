@@ -65,14 +65,14 @@ class GameOfLife
             // for each column in row
             for (let j=0; j<this.columns; j++)
             {
-                // cell has life: set color to black
-                this.cells[i][j] ? fill(0) : fill(255);
+                // set color cell color depending on state
+                this.cells[i][j] ? fill(...ALIVE) : fill(...DEAD);
 
-                // draw cell borders
+                // draw cell
 				rect(j*this.resolution, i*this.resolution, this.resolution, this.resolution);
 			}
 		}
-	}
+    }
 
     /**
      * I compute how many surrounding with life a given position has.
