@@ -2,28 +2,32 @@
  * Game of life automata abstraction.
  */
 
+
 class GameOfLife
 {
     /**
      * Constructor.
      *
      * Args:
+     *  width(number):      width of game grid in pixels
+     *  height(number):     height of the game grid in pixels
      *  resolution(number): grid tile resolution in pixels
      *
      * Returns:
      *  undefined.
      */
-    constructor(resolution)
+    constructor(heigth, width, resolution)
     {
         // store components
         this.resolution = resolution;
-        this.rows = windowHeight / this.resolution;
-		this.columns = windowWidth / this.resolution;
-        this.cells = []
+        this.rows       = heigth / this.resolution;
+        this.columns    = width / this.resolution;
+        this.cells      = []
 
         // start game of life
 		this.start();
 	}
+
 
     /**
      * I setup my initial state.
@@ -51,6 +55,7 @@ class GameOfLife
 		}
 	}
 
+
     /**
      * I draw my state representation.
      *
@@ -73,6 +78,7 @@ class GameOfLife
 			}
 		}
     }
+
 
     /**
      * I compute how many surrounding with life a given position has.
@@ -102,9 +108,9 @@ class GameOfLife
 			}
         }
 
-        // return amount of surrounding with life
 		return around;
 	}
+
 
     /**
      * I update my state.
@@ -118,25 +124,25 @@ class GameOfLife
         let next = [];
 
         // for each row in grid
-        for(let i=0; i<this.rows; i++)
+        for (let i=0; i<this.rows; i++)
         {
             // start updated row container
             let row = [];
 
             // for each column in row
-            for(let j=0; j<this.columns; j++)
+            for (let j=0; j<this.columns; j++)
             {
                 // get amount of surrounding cells with life
 				const around = this.neighboors(i, j);
 
 				// cell is dead and has exactly three neighboors: create life
-                if(!this.cells[i][j] && (around === 3))
+                if (!this.cells[i][j] && (around === 3))
                 {
 					row.push(true);
 				}
 
 				// cell is alive and has two or three neighboors: cell survives
-                else if(this.cells[i][j] && (around >= 2 && around <= 3))
+                else if (this.cells[i][j] && (around >= 2 && around <= 3))
                 {
 					row.push(this.cells[i][j]);
 				}
