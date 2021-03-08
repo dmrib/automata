@@ -7,14 +7,14 @@
 let game;
 
 // define colors
-const DEAD   = [242,147,214];
-const ALIVE  = [168,224,182];
-const BORDER = [96,133,242];
+const DEAD   = [242, 147, 214];
+const ALIVE  = [168, 224, 182];
+const BORDER = [96, 133, 242];
 
 // define grid dimensions
 const HEIGHT     = 900;
 const WIDTH      = 900;
-const RESOLUTION = 30;
+const RESOLUTION = 20;
 
 
 /**
