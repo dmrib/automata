@@ -25,8 +25,8 @@ class GameOfLife
         this.cells      = []
 
         // start game of life
-		this.start();
-	}
+        this.start();
+    }
 
 
     /**
@@ -47,13 +47,13 @@ class GameOfLife
             for (let j=0; j<this.columns; j++)
             {
                 // randomize life presence
-				row.push(random() > 0.5 ? true : false);
+                row.push(random() > 0.5 ? true : false);
             }
 
             // insert created row in grid
-			this.cells.push(row);
-		}
-	}
+            this.cells.push(row);
+        }
+    }
 
 
     /**
@@ -74,9 +74,9 @@ class GameOfLife
                 this.cells[i][j] ? fill(...ALIVE) : fill(...DEAD);
 
                 // draw cell
-				rect(j*this.resolution, i*this.resolution, this.resolution, this.resolution);
-			}
-		}
+                rect(j*this.resolution, i*this.resolution, this.resolution, this.resolution);
+            }
+        }
     }
 
 
@@ -103,13 +103,13 @@ class GameOfLife
                 // neighboor position has life: increment counter
                 if (!(i===x && j===y) && this.cells[i][j])
                 {
-					around++;
-				}
-			}
+                    around++;
+                }
+            }
         }
 
-		return around;
-	}
+        return around;
+    }
 
 
     /**
@@ -133,32 +133,32 @@ class GameOfLife
             for (let j=0; j<this.columns; j++)
             {
                 // get amount of surrounding cells with life
-				const around = this.neighboors(i, j);
+                const around = this.neighboors(i, j);
 
-				// cell is dead and has exactly three neighboors: create life
+                // cell is dead and has exactly three neighboors: create life
                 if (!this.cells[i][j] && (around === 3))
                 {
-					row.push(true);
-				}
+                    row.push(true);
+                }
 
-				// cell is alive and has two or three neighboors: cell survives
+                // cell is alive and has two or three neighboors: cell survives
                 else if (this.cells[i][j] && (around >= 2 && around <= 3))
                 {
-					row.push(this.cells[i][j]);
-				}
+                    row.push(this.cells[i][j]);
+                }
 
-				// otherwise: cell dies
+                // otherwise: cell dies
                 else
                 {
-					row.push(false);
-				}
+                    row.push(false);
+                }
             }
 
             // add row to next state
-			next.push(row);
+            next.push(row);
         }
 
         // update state
-		this.cells = next;
-	}
+        this.cells = next;
+    }
 }
